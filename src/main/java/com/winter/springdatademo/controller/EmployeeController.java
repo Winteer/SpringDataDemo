@@ -17,10 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @ClassName : EmployeeController  //类名
- * @Description : 雇员  //描述
- * @Author : Winter  //作者
- * @Date: 2020-08-19 17:43  //时间
+ * @ClassName : EmployeeController
+ * @Description : 雇员
+ * @Author : Winter
+ * @Date: 2020-08-19 17:43
  */
 @Api(value = "雇员操作Api", tags = {"雇员操作管理"})
 @RestController
@@ -38,12 +38,15 @@ public class EmployeeController {
         employeeService.save(employee);
     }
 
+
+
+
+
     @ApiOperation(value = "根据姓名查找单个雇员")
     @GetMapping("/find")
     public Employee findByName(String name) {
         return employeeService.findByName(name);
     }
-
 
     @ApiOperation(value = "根据id查找")
     @GetMapping("/findById")
@@ -95,7 +98,6 @@ public class EmployeeController {
         Page<Employee> employeePage = employeePageAndSortResposiory.findAllByAge(pageable,age);
         return employeePage;
     }
-
 
 }
 
