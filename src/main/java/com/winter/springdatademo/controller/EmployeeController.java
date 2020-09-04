@@ -39,9 +39,6 @@ public class EmployeeController {
     }
 
 
-
-
-
     @ApiOperation(value = "根据姓名查找单个雇员")
     @GetMapping("/find")
     public Employee findByName(String name) {
@@ -86,16 +83,16 @@ public class EmployeeController {
     @ApiOperation(value = "分页")
     @GetMapping("/pageAndSort")
     public Page<Employee> pageList(int pageNum, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNum, pageSize,Sort.Direction.DESC,"id");
+        Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.Direction.DESC, "id");
         Page<Employee> employeePage = employeePageAndSortResposiory.findAll(pageable);
         return employeePage;
     }
 
     @ApiOperation(value = "根据年龄条件查找分页")
     @GetMapping("/pageAge")
-    public Page<Employee> pageAge(int pageNum, int pageSize,int age) {
-        Pageable pageable = PageRequest.of(pageNum, pageSize,Sort.Direction.DESC,"id");
-        Page<Employee> employeePage = employeePageAndSortResposiory.findAllByAge(pageable,age);
+    public Page<Employee> pageAge(int pageNum, int pageSize, int age) {
+        Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.Direction.DESC, "id");
+        Page<Employee> employeePage = employeePageAndSortResposiory.findAllByAge(pageable, age);
         return employeePage;
     }
 
