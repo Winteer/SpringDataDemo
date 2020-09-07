@@ -20,7 +20,7 @@ import java.io.IOException;
 @Component
 public class RateLimitFilter extends OncePerRequestFilter {
 
-    private RateLimiter rateLimiter = RateLimiter.create(1);    //创建一个流控控制器
+    private RateLimiter rateLimiter = RateLimiter.create(10);    //创建一个流控控制器
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
