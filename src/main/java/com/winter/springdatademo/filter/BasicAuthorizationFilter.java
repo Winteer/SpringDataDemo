@@ -1,5 +1,6 @@
 package com.winter.springdatademo.filter;
 
+import com.lambdaworks.crypto.SCryptUtil;
 import com.winter.springdatademo.model.User;
 import com.winter.springdatademo.repository.UserRepository;
 import org.apache.commons.lang3.StringUtils;
@@ -36,7 +37,7 @@ public class BasicAuthorizationFilter extends OncePerRequestFilter {
             String username = items[0];
             String password = items[1];
             User user = userRepository.findByUsername(username);
-            if (user != null && StringUtils.equals(password, user.getPassword())) {
+            if (user != null && SCryptUtil.check(password, user.getPassword())) {
                 httpServletRequest.setAttribute("user", user);
             }
         }

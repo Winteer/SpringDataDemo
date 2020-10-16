@@ -1,5 +1,6 @@
 package com.winter.springdatademo.service.impl;
 
+import com.lambdaworks.crypto.SCryptUtil;
 import com.winter.springdatademo.model.User;
 import com.winter.springdatademo.model.UserInfo;
 import com.winter.springdatademo.repository.UserRepository;
@@ -26,6 +27,7 @@ public class UserServiceImpl implements UserService {
     public UserInfo save(UserInfo userInfo) {
         User user = new User();
         BeanUtils.copyProperties(userInfo, user);
+        user.setPassword(SCryptUtil.scrypt(user.getPassword(), 32768, 8, 1));
         userRepository.save(user);
         return userInfo;
     }
