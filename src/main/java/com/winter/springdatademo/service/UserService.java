@@ -1,8 +1,8 @@
 package com.winter.springdatademo.service;
 
 import com.winter.springdatademo.model.UserInfo;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 

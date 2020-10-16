@@ -25,9 +25,11 @@ public class Master {
     @Column(name = "ma_age")
     private Integer maAge;
 
-    @OneToMany(mappedBy = "master",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+
+    //    @JsonIgnore
+    @OneToMany(mappedBy = "master", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnoreProperties(ignoreUnknown = true, value = "master")
-    private List<Employee> employees;
+    public List<Employee> employees;
 
 
     public Integer getMaId() {

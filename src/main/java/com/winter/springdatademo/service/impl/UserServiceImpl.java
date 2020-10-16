@@ -1,7 +1,11 @@
 package com.winter.springdatademo.service.impl;
 
+import com.winter.springdatademo.model.User;
 import com.winter.springdatademo.model.UserInfo;
+import com.winter.springdatademo.repository.UserRepository;
 import com.winter.springdatademo.service.UserService;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,24 +19,33 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
+    @Autowired
+    UserRepository userRepository;
+
     @Override
-    public UserInfo save(UserInfo user) {
-        return null;
+    public UserInfo save(UserInfo userInfo) {
+        User user = new User();
+        BeanUtils.copyProperties(userInfo, user);
+        userRepository.save(user);
+        return userInfo;
     }
 
     @Override
-    public UserInfo update(UserInfo user) {
+    public UserInfo update(UserInfo userInfo) {
+        User user = new User();
+        BeanUtils.copyProperties(userInfo, user);
         return null;
     }
 
     @Override
     public void delete(Long id) {
 
+
     }
 
     @Override
     public UserInfo find(Long id) {
-        return null;
+        return userRepository.findById(id).get().buildInfo();
     }
 
     @Override

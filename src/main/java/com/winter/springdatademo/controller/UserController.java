@@ -2,13 +2,14 @@ package com.winter.springdatademo.controller;
 
 import com.winter.springdatademo.model.User;
 import com.winter.springdatademo.model.UserInfo;
-import com.winter.springdatademo.repository.UserRepository;
 import com.winter.springdatademo.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -28,12 +29,12 @@ public class UserController {
 
     @ApiOperation(value = "添加用户")
     @PostMapping("/add")
-    public UserInfo create(@RequestBody UserInfo user) {
+    public UserInfo create(@RequestBody @Validated UserInfo user) {
         userService.save(user);
         return user;
     }
 
-    @ApiOperation(value = "更新用户")
+    @ApiOperation(value = "接口功能", notes = "作者")
     @PutMapping("/update")
     public UserInfo update(@RequestBody UserInfo user) {
         return userService.update(user);
@@ -48,7 +49,11 @@ public class UserController {
 
     @ApiOperation(value = "根据id查询用户")
     @GetMapping("/find/{id}")
-    public UserInfo find(@PathVariable Long id) {
+    public UserInfo find(@PathVariable Long id, HttpServletRequest request) {
+        User user = (User) request.getAttribute("user");
+        if (user == null || !user.getId().equals(id)) {
+            throw new RuntimeException("身份认证信息异常，获取用户信息失败！");
+        }
         System.out.println("接收到的id为：" + id);
         return userService.find(id);
     }

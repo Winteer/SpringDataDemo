@@ -1,7 +1,6 @@
 package com.winter.springdatademo.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -35,8 +34,8 @@ public class Employee {
     private Integer age;
 
     @ApiModelProperty(value = "雇主对象")
-    @ManyToOne(cascade = {CascadeType.REMOVE,CascadeType.REFRESH},optional = false,fetch = FetchType.EAGER)
-    @JoinColumn(name = "ma_id")
+    @ManyToOne(cascade = {CascadeType.REMOVE, CascadeType.REFRESH}, optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "ma_id", foreignKey = @ForeignKey(name = "null", value = ConstraintMode.NO_CONSTRAINT))
     @JsonIgnoreProperties(ignoreUnknown = true, value = "employees")
     private Master master;
 
