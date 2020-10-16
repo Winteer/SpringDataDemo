@@ -17,3 +17,9 @@ spring:
       ddl-auto: update         #保留数据库以及表更新数据库
       #ddl-auto: validate      #运行程序会校验数据与数据库的字段类型是否相同，不同会报错
     show-sql: true
+#开启https
+server:
+  ssl:
+    key-store: classpath:winter.key
+    key-store-password: winter
+    key-password: winter
