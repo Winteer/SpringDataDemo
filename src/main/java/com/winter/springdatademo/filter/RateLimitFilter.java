@@ -1,6 +1,7 @@
 package com.winter.springdatademo.filter;
 
 import com.google.common.util.concurrent.RateLimiter;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -18,6 +19,7 @@ import java.io.IOException;
  * @Date: 2020-09-04 11:58
  */
 @Component
+@Order(1)
 public class RateLimitFilter extends OncePerRequestFilter {
 
     private RateLimiter rateLimiter = RateLimiter.create(10);    //创建一个流控控制器
@@ -25,7 +27,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                     FilterChain filterChain) throws ServletException, IOException {
-
+        System.out.println("流控");
         if (rateLimiter.tryAcquire()) { //正常则继续
             filterChain.doFilter(httpServletRequest, httpServletResponse);
         } else {

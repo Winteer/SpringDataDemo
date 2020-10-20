@@ -5,6 +5,7 @@ import com.winter.springdatademo.model.User;
 import com.winter.springdatademo.repository.UserRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -22,6 +23,7 @@ import java.io.IOException;
  * @Date: 2020-10-14 11:39
  */
 @Component
+@Order(2)
 public class BasicAuthorizationFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -30,6 +32,7 @@ public class BasicAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String authHeader = httpServletRequest.getHeader("Authorization");
+        System.out.println("认证");
         if (StringUtils.isNotBlank(authHeader)) {
             String token64 = StringUtils.substringAfter(authHeader, "Basic ");
             String token = new String(Base64Utils.decodeFromString(token64));
