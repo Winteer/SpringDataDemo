@@ -1,5 +1,6 @@
 package com.winter.springdatademo.config;
 
+import com.winter.springdatademo.filter.AclInterceptor;
 import com.winter.springdatademo.filter.AuditLogInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -23,10 +24,15 @@ public class SecurityConfig implements WebMvcConfigurer {
 
     @Autowired
     private AuditLogInterceptor auditLogInterceptor;
+    @Autowired
+    private AclInterceptor aclInterceptor;
 
+
+    //配置拦截器
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(auditLogInterceptor);
+        registry.addInterceptor(aclInterceptor);
     }
 
 
@@ -36,6 +42,7 @@ public class SecurityConfig implements WebMvcConfigurer {
         return new AuditorAware<String>() {
             @Override
             public Optional<String> getCurrentAuditor() {
+                //todo
                 // 写死，后续可用Redis获取或其他方式全局可用
                 return Optional.of("winter2");
             }

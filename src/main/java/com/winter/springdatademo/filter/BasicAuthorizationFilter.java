@@ -32,7 +32,7 @@ public class BasicAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String authHeader = httpServletRequest.getHeader("Authorization");
-        System.out.println("认证");
+        System.out.println("认证 -- 2");
         if (StringUtils.isNotBlank(authHeader)) {
             String token64 = StringUtils.substringAfter(authHeader, "Basic ");
             String token = new String(Base64Utils.decodeFromString(token64));

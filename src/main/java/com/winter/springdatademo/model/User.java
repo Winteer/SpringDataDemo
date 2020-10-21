@@ -1,5 +1,6 @@
 package com.winter.springdatademo.model;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.*;
@@ -23,10 +24,20 @@ public class User {
     @NotBlank
     private String password;
 
+    private String permissions;
+
     public UserInfo buildInfo() {
         UserInfo info = new UserInfo();
         BeanUtils.copyProperties(this, info);
         return info;
+    }
+
+    public String getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(String permissions) {
+        this.permissions = permissions;
     }
 
     public Long getId() {
@@ -59,5 +70,15 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean hasPermission(String method) {
+        boolean result = false;
+        if (StringUtils.equalsIgnoreCase("get", method)) {
+            result = StringUtils.contains(permissions, "r");
+        } else {
+            result = StringUtils.contains(permissions, "w");
+        }
+        return result;
     }
 }

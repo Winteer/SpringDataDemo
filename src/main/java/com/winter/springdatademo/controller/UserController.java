@@ -23,8 +23,16 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
+    private String[] permitUrls = new String[]{"/users/login"};
     @Autowired
     private UserService userService;
+
+    @ApiOperation(value = "登录")
+    @GetMapping("/login")
+    public void login(@Validated UserInfo user, HttpServletRequest request) {
+//        UserInfo userInfo = userService.login(user);
+//        request.getSession().setAttribute("user",userInfo);
+    }
 
 
     @ApiOperation(value = "添加用户")
