@@ -51,7 +51,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserInfo> findByName(String name) {
-        return null;
+    public List<User> findByName(String name) {
+        List<User> userInfoList = userRepository.findByName(name);
+        return userInfoList;
+    }
+
+    @Override
+    public UserInfo login(UserInfo userInfo) {
+        UserInfo result = null;
+        User user = userRepository.findByUsername(userInfo.getUsername());
+        if (user != null && SCryptUtil.check(userInfo.getPassword(), user.getPassword())) {
+            result = user.buildInfo();
+        }
+        return result;
     }
 }

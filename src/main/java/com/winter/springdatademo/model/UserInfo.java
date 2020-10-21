@@ -1,5 +1,7 @@
 package com.winter.springdatademo.model;
 
+import org.springframework.beans.BeanUtils;
+
 import javax.validation.constraints.NotBlank;
 
 /**
@@ -15,6 +17,22 @@ public class UserInfo {
     private String username;
     @NotBlank(message = "密码不能为空！")
     private String password;
+
+    private String permissions;
+
+    public String getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(String permissions) {
+        this.permissions = permissions;
+    }
+
+    public User buildInfo() {
+        User user = new User();
+        BeanUtils.copyProperties(this, user);
+        return user;
+    }
 
     public Long getId() {
         return id;

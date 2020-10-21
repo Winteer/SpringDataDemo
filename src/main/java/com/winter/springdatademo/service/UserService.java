@@ -1,5 +1,6 @@
 package com.winter.springdatademo.service;
 
+import com.winter.springdatademo.model.User;
 import com.winter.springdatademo.model.UserInfo;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,7 @@ public interface UserService {
 
     UserInfo find(@PathVariable Long id);
 
-    List<UserInfo> findByName(@PathVariable String name);
+    List<User> findByName(@PathVariable String name);
 
+    UserInfo login(UserInfo userInfo);
 }

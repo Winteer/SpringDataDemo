@@ -29,9 +29,9 @@ public class UserController {
 
     @ApiOperation(value = "登录")
     @GetMapping("/login")
-    public void login(@Validated UserInfo user, HttpServletRequest request) {
-//        UserInfo userInfo = userService.login(user);
-//        request.getSession().setAttribute("user",userInfo);
+    public void login(@Validated UserInfo info, HttpServletRequest request) {
+        UserInfo userInfo = userService.login(info);
+        request.getSession().setAttribute("user", userInfo);
     }
 
 
@@ -58,7 +58,8 @@ public class UserController {
     @ApiOperation(value = "根据id查询用户")
     @GetMapping("/find/{id}")
     public UserInfo find(@PathVariable Long id, HttpServletRequest request) {
-        User user = (User) request.getAttribute("user");
+//        User user = (User) request.getAttribute("user");
+        User user = ((UserInfo) request.getSession().getAttribute("user")).buildInfo();
         if (user == null || !user.getId().equals(id)) {
             throw new RuntimeException("身份认证信息异常，获取用户信息失败！");
         }
@@ -67,8 +68,8 @@ public class UserController {
     }
 
     @ApiOperation(value = "根据姓名查询用户列表")
-    @GetMapping("/query/{name}")
-    public List<UserInfo> query(@PathVariable String name) {
+    @GetMapping("/query")
+    public List<User> query(String name) {
         System.out.println("name：" + name);
         return userService.findByName(name);
     }
