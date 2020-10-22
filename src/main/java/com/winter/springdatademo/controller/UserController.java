@@ -10,6 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -31,7 +32,20 @@ public class UserController {
     @GetMapping("/login")
     public void login(@Validated UserInfo info, HttpServletRequest request) {
         UserInfo userInfo = userService.login(info);
+        //防范session fixation 攻击
+        //若session为空，则返回null，若session已存在则返回已存在的session。
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            //若session为空，则失效掉。
+            session.invalidate();
+        }
         request.getSession().setAttribute("user", userInfo);
+    }
+
+    @ApiOperation(value = "退出")
+    @GetMapping("/logout")
+    public void logout(HttpServletRequest request) {
+        request.getSession().invalidate();
     }
 
 
@@ -59,8 +73,8 @@ public class UserController {
     @GetMapping("/find/{id}")
     public UserInfo find(@PathVariable Long id, HttpServletRequest request) {
 //        User user = (User) request.getAttribute("user");
-        User user = ((UserInfo) request.getSession().getAttribute("user")).buildInfo();
-        if (user == null || !user.getId().equals(id)) {
+        UserInfo userInfo = (UserInfo) request.getSession().getAttribute("user");
+        if (userInfo == null || !userInfo.getId().equals(id)) {
             throw new RuntimeException("身份认证信息异常，获取用户信息失败！");
         }
         System.out.println("接收到的id为：" + id);

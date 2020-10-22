@@ -2,11 +2,14 @@ package com.winter.springdatademo.config;
 
 import com.winter.springdatademo.filter.AclInterceptor;
 import com.winter.springdatademo.filter.AuditLogInterceptor;
+import com.winter.springdatademo.model.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -42,9 +45,15 @@ public class SecurityConfig implements WebMvcConfigurer {
         return new AuditorAware<String>() {
             @Override
             public Optional<String> getCurrentAuditor() {
-                //todo
-                // 写死，后续可用Redis获取或其他方式全局可用
-                return Optional.of("winter2");
+
+                //Spring 提供的静态方法获取Session，拿到当前的用户名
+                ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+                UserInfo userInfo = (UserInfo) servletRequestAttributes.getRequest().getSession().getAttribute("user");
+                String username = null;
+                if (userInfo != null) {
+                    username = userInfo.getUsername();
+                }
+                return Optional.ofNullable(username);
             }
         };
     }
